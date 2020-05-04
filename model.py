@@ -36,6 +36,9 @@ def Unet(input_shape=(256, 256, 3)):
     conv5 = Conv2D(512, (3, 3), padding = 'same')(conv4_pool)
     conv5 = BatchNormalization()(conv5)
     conv5 = Activation('relu')(conv5)
+    conv5 = Conv2D(512, (3, 3), padding = 'same')(conv5)
+    conv5 = BatchNormalization()(conv5)
+    conv5 = Activation('relu')(conv5)
 
     up4 = UpSampling2D((2,2))(conv5)
     concatenate4 = concatenate([conv4, up4], axis=-1)
@@ -72,7 +75,7 @@ def Unet(input_shape=(256, 256, 3)):
     outputs = Conv2D(1, 
                       kernel_size=1,
                       strides=1,
-                      activation='tanh',
+                      activation='sigmoid',
                       padding='same')(dec1)
 
     model = Model(inputs=inputs, outputs=outputs)
